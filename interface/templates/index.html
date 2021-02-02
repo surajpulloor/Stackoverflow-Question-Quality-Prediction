@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stackoverflow Question Quality Prediction</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+  <style>
+
+    img {
+      width: 200px;
+    }
+
+    img.watermark {
+      opacity: 0.5;
+    }
+
+    .watermark-layer {
+      transform: rotate(-30deg);
+      position: relative;
+      top: 45px;
+      left: 19px;
+      z-index: -1;
+      width: 300px;
+    }
+
+    .header {
+      padding-top: 15px;
+    }
+
+  </style>
+</head>
+<body>
+  
+  <div class="container">
+
+    
+    <div class="header">
+      <img src="{{url_for('static', filename='stackoverflow.png')}}" alt="Stackoverflow.com" title="Stackoverflow.com">
+    
+      <h2>Question Quality prediction's</h2>
+    </div>
+
+    
+    <h3>Please enter the question's title & body</h3>
+    <form action="/" method="post">
+
+      <div class="mb-3">
+        <label for="qustionTitle" class="form-label">Question's Title</label>
+        <input type="text" class="form-control" id="questionTitle" name="questionTitle" placeholder="Write some title" required>
+      </div>
+      <div class="mb-3">
+        <label for="questionBody" class="form-label">Question's Body</label>
+        <textarea class="form-control" id="questionBody" name="questionBody" rows="3" placeholder="Write some body" required></textarea>
+      </div>
+
+      <input type="submit" value="Predict Question Quality" class="btn btn-primary">
+    </form>
+
+
+    {% if text %}
+      <div class="row">
+        <div class="col-md-6">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Sr No.</th>
+                <th scope="col">Model</th>
+                <th scope="col">Accuracy</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Stacking Classifier</td>
+                <td>{{ models['Stacking'][0] }}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">2</th>
+                <td>XGBoost</td>
+                <td>{{ models['XGBoost'][0] }}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">3</th>
+                <td>Logistic Regression</td>
+                <td>{{ models['LogisticReg'][0] }}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">4</th>
+                <td>Bagging Classifier</td>
+                <td>{{ models['Bagging'][0] }}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">5</th>
+                <td>Voting Classifier</td>
+                <td>{{ models['Voting'][0] }}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">6</th>
+                <td>MLP</td>
+                <td>{{ models['MLP'][0] }}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">7</th>
+                <td>Random Forest</td>
+                <td>{{ models['RandomForest'][0] }}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">8</th>
+                <td>Linear SVC</td>
+                <td>{{ models['SVC'][0] }}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">9</th>
+                <td>Decision Tree</td>
+                <td>{{ models['DecisionTree'][0] }}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">10</th>
+                <td>Naive Bayes</td>
+                <td>{{ models['NaiveBayes'][0] }}</td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <h3>
+            Based on Stacking classifier question is categorised to.
+            {% if models['Stacking'][1] == 0%}
+            <h2 style="color:red;">High Quality</h2>
+            {% elif models['Stacking'][1] == 1%}
+            <h2 style="color:blue;">Low Quality</h2>
+            {% endif %}
+          </h3>
+        </div>
+      </div>
+
+    {% endif %}
+  </div>
+
+
+
+
+</body>
+</html>
